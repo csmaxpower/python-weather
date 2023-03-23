@@ -19,7 +19,7 @@ class Client:
 
     self.__session = session or ClientSession(timeout=ClientTimeout(total=5000.0), connector=TCPConnector(verify_ssl=False))
     self.__default_format = 'C' if is_invalid_format(format) else format
-
+  
   def __repr__(self) -> str:
     """
     Returns:
@@ -39,7 +39,7 @@ class Client:
     Raises:
         InvalidArg: Invalid `location` argument
         Error: Client is already closed
-
+    
     Returns:
         Weather: The weather forecast for the given location.
     """
@@ -55,7 +55,6 @@ class Client:
     async with self.__session.get(f'https://wttr.in/{quote_plus(location)}?format=j1') as resp:
       return Weather(await resp.json(), format)
 
-
   @property
   def format(self) -> str:
     """
@@ -64,7 +63,7 @@ class Client:
     """
 
     return self.__default_format
-
+  
   @format.setter
   def format(self, to: str):
     """
@@ -79,7 +78,7 @@ class Client:
 
     if is_invalid_format(to):
       raise InvalidArg(VALID_FORMATS, to)
-
+    
     self.__default_format = to
 
   async def close(self) -> None:
@@ -94,7 +93,7 @@ class Client:
     """
     `async with` handler. Does nothing. Returns `self`
     """
-
+    
     return self
 
   async def __aexit__(self, *_, **__):
